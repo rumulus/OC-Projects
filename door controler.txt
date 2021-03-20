@@ -1,0 +1,65 @@
+component = require("component")
+event = require("event")
+local wifi = component.modem
+local door = component.os_rolldoorcontroller
+
+wifi.open(12)
+
+local function door_open(_,_,_,_,_,mess)
+    if mess == pass then
+        os.sleep(1)
+        door.toggle()
+        wifi.broadcast(12,"Správné")
+    else
+        os.sleep(1)
+        wifi.broadcast(12,"Špatné")
+    end
+end
+
+a = true
+
+print("vytvoøte si heslo :")
+pass = io.read()
+
+event.listen("modem_message",door_open)
+ 
+while a == true do
+    os.execute("cls")
+    print([[Zámek v2.0
+    
+MENU:
+1. otevøít/zavøít
+2. konec]])
+    print("vyberte:")
+    local b = tonumber(io.read())
+    if b == 1 then
+        print("")
+        print("zadejte heslo:")
+        c = io.read()
+        if c == pass then
+            door.toggle()
+            os.sleep(1)
+        else
+            print ("špatné heslo !")
+            os.sleep(1)
+        end
+    elseif b == 2 then
+        print("")
+        print("napište heslo:")
+        c = io.read()
+        if c == pass then
+            os.execute("cls")
+            print ("nashledanou !")
+            os.sleep(1)
+            a = false
+        else
+            print("špatné heslo!")
+            os.sleep(1)
+        end
+    else
+        print("zadaná špatná hodota")
+        os.sleep(1)
+    end
+end
+    
+    

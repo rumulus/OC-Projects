@@ -1,0 +1,46 @@
+component = require("component")
+event = require("event")
+wifi = component.modem
+
+wifi.open(12)
+mess = 0
+function move(_,_,_,a)
+    if a == 200 then
+        wifi.broadcast(12,1)
+    elseif a == 208 then
+        wifi.broadcast(12,3)
+    elseif a == 203 then
+        wifi.broadcast(12,2)
+    elseif a == 205 then
+        wifi.broadcast(12,4)
+    elseif a == 57 then
+        wifi.broadcast(12,5)
+    elseif a == 42 then
+        wifi.broadcast(12,6)
+    elseif a == 29 then
+        wifi.broadcast(12,7)
+        print("goodbye!")
+        os.sleep(1)
+        os.execute("shutdown")
+    end
+    os.sleep(1)
+end
+
+while true do
+    event.listen("key_down",move)
+    _,_,_,_,_,mess = event.pull("modem_message")
+    os.execute("cls")
+    print([[
+    Robot Miner v1.0
+    controls: 
+    arrowkeys = movement
+    spacebar = up
+    shift = down
+    ctrl = exit
+    ]])
+    print("detection:")
+    print(mess)
+    os.sleep(0.5)
+end
+
+

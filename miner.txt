@@ -1,0 +1,58 @@
+component = require("component")
+robot = require("robot")
+event = require("event")
+wifi = component.modem
+
+wifi.open(12)
+b = 1
+
+function move(_,_,_,_,_,a)
+    
+    if a == 1 then
+        f = robot.detect()
+        if f then
+            robot.swing()
+            robot.forward()
+        else 
+            robot.forward()
+        end
+    elseif a == 2 then
+        robot.turnLeft()
+    elseif a == 3 then
+        robot.back()
+    elseif a == 4 then
+        robot.turnRight()
+    elseif a == 5 then
+        f = robot.detectUp()
+        if f then
+            robot.swingUp()
+            robot.up()
+        else
+            robot.up()
+        end
+    elseif a == 6 then
+        f = robot.detectDown()
+        if f then
+            robot.swingDown()
+            robot.down()
+        else
+            robot.down()
+        end
+    elseif a == 7 then
+        os.execute("shutdown")
+    end
+end
+
+event.listen("modem_message",move)
+os.execute("cls")
+print("Robotto")
+while true do    
+    b = robot.detect()
+    if b then
+        wifi.broadcast(12,"block")
+    elseif b ~= true then
+        wifi.broadcast(12,"air")
+    end
+    os.sleep(1)
+end
+       

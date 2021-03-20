@@ -1,0 +1,35 @@
+component = require("component")
+event = require("event")
+wifi = component.modem
+term = require("term")
+
+wifi.open(12)
+wifi.open(13)
+
+while true do
+    term.clear()
+    print([[Zámek v2.0 - Dálkové ovládání
+
+MENU:
+1. otevøít/zavøít
+2. zavøít]])
+    a = tonumber(io.read())
+    if a == 1 then
+        print("")
+        print("napište heslo:")
+        pass = io.read()
+        wifi.broadcast(12,pass)
+        _,_,_,_,_,i = event.pull("modem_message")
+        print(i," heslo !")
+        os.sleep(1)
+    elseif a == 2 then 
+        term.clear()
+        print("nashledanou !")
+        os.sleep(1)
+        goto eof
+    else
+        print("špatná hodnota")
+        os.sleep(1)
+    end
+end
+::eof::       

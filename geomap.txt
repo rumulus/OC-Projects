@@ -1,0 +1,31 @@
+local component = require("component")
+local geo = component.geolyzer
+local holo = component.hologram
+
+holo.setScale(0.33)
+holo.clear()
+
+local h1 = 32
+local x = -24
+local y = -24
+local h = 32
+
+while x < 25 do
+    while y < 25 do
+        local a = geo.scan(x,y,-16,1,1,h)
+        while h1 > 0 do
+            x1 = x + 25
+            y1 = y + 25
+            print(a[h1])
+            if a[h1] ~= 0 then
+                h2 = h - h1
+                holo.set(x1,(-h2)+32,y1,true)
+            end
+            h1 = h1 - 1
+        end
+        h1 = 32
+        y = y + 1
+    end
+    y = -24
+    x = x + 1
+end
